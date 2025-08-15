@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
             color:isDark ? Colors.white :Colors.black ,
           )),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.40,
+            height: MediaQuery.of(context).size.height * 0.36,
           ),
           ShaderMaskText(
               text: 'POWERED by MezanGrp'.toUpperCase(),

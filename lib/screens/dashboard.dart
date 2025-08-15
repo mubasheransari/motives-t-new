@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
@@ -12,7 +13,15 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   bool isAvailable = false;
-  
+    List<FlSpot> graphPoints = [
+    FlSpot(0, 2.5),
+    FlSpot(1, 3.0),
+    FlSpot(2, 3.8),
+    FlSpot(3, 4.2),
+    FlSpot(4, 3.9),
+    FlSpot(5, 4.5),
+    FlSpot(6, 4.1),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +107,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left:10.0),
+              child: ShaderMaskText(
+              text: "Sales Graph",
+              textxfontsize: 22,
+                        ),
+            ),
+              const SizedBox(height: 10),
+               Center(
+                 child: Container(
+                  child: SizedBox(
+                    height: 160,
+                    width: MediaQuery.of(context).size.width *0.90,
+                    child: LineChart(
+                      LineChartData(
+                        gridData: FlGridData(show: true),
+                        titlesData: FlTitlesData(show: false),
+                        borderData: FlBorderData(show: false),
+                        lineBarsData: [
+                          LineChartBarData(
+                            spots: graphPoints,
+                            isCurved: true,
+                            color: Colors.blue,
+                            barWidth: 3,
+                            dotData: FlDotData(show: true),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                               ),
+               ),
+              const SizedBox(height: 20),
 
             // Icon grid menu
             Padding(
@@ -109,18 +151,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _buildMenuButton(Icons.access_time, "Time\nCard"),
-                      _buildMenuButton(
-                        Icons.alt_route,
-                        "Today's\nRoute",
-                      ),
-                      _buildMenuButton(
-                        Icons.shopping_cart,
-                        "Punch\nOrder",
-                      ),
+                       _buildMenuButton(Icons.person, "Profile\nDetails"),
+                      // _buildMenuButton(
+                      //   Icons.alt_route,
+                      //   "Today's\nRoute",
+                      // ),
+                      // _buildMenuButton(
+                      //   Icons.shopping_cart,
+                      //   "Punch\nOrder",
+                      // ),
                       _buildMenuButton(
                         Icons.cloud_download,
                         "Sync\nIn",
                       ),
+                       _buildMenuButton(Icons.cloud_upload, "Sync\nOut"),
                     ],
                   ),
                   const SizedBox(height: 20),

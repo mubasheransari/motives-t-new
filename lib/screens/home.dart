@@ -59,12 +59,12 @@ class _MainScreenState extends State<MainScreen> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: _buildGradientIcon(Icons.search),
-            label: "Search",
+            icon: _buildGradientIcon(Icons.alt_route),
+            label: "Routes",
           ),
           BottomNavigationBarItem(
-            icon: _buildGradientIcon(Icons.person_outline),
-            label: "Profile",
+            icon: _buildGradientIcon(Icons.shopping_cart),
+            label: "Punch Order",
           ),
         ],
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),

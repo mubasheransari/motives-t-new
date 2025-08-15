@@ -168,20 +168,20 @@ class _MarkAttendanceViewState extends State<MarkAttendanceView> {
               ),
             ),
           Positioned(
-            bottom: 30,
+            bottom: 20,
             left: 16,
             right: 16,
             child:InkWell(
               onTap: _markAttendance,
               child: GlassCard(
-                width: MediaQuery.of(context).size.width * 0.80,
+                width: MediaQuery.of(context).size.width * 0.95,
                 height: 60,
                 borderRadius: 16,
                 child: Row(
                   children: [
                     const SizedBox(width: 12),
                     const SizedBox(width: 8),
-                    ShaderMaskText(text: 'Mark Attendence', textxfontsize: 19),
+                    ShaderMaskText(text: '\t\t\t\t\t\t\t\t\t\t\t\tMark Attendence', textxfontsize: 19),
                     const Spacer(),
                          
                   ],
