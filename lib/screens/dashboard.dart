@@ -155,7 +155,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         child: _buildMenuButton(Icons.access_time, "Time\nCard")),
                        InkWell(
                         onTap:(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreenNew()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreen()));
                         },
                         child: _buildMenuButton(Icons.person, "Profile\nDetails")),
                       // _buildMenuButton(

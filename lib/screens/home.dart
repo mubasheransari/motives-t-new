@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     DashboardScreen(),
     TaskScreen(),
-    ProfileScreenNew()
+    ProfileScreen()
   ];
 
   Widget _buildGradientIcon(IconData iconData) {

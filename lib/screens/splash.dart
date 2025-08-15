@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
+import 'package:motives_tneww/widget/shader_mask_text.dart';
 import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {

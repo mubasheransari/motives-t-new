@@ -98,6 +98,7 @@ import 'package:motives_tneww/widget/shader_mask_text.dart';
                   ],
                 ),
 
+
                 const SizedBox(height: 25),
                     InkWell(
                   onTap: () {
