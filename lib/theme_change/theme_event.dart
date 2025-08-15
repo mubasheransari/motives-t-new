@@ -6,4 +6,4 @@ class ToggleThemeEvent extends ThemeEvent {
   ToggleThemeEvent(this.isDark);
 }
 
-class LoadThemeEvent extends ThemeEvent {}
+class LoadThemeEvent extends ThemeEvent {} // triggers loading from storage

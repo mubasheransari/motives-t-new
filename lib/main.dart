@@ -22,24 +22,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = ThemeData(
-  brightness: Brightness.light,
-  primarySwatch: Colors.blue,
-);
-
-final darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  primarySwatch: Colors.blue,
-);
-
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
         return MaterialApp(
-          title: 'BLoC Theme Switcher',
-          theme: lightTheme,
-          darkTheme: darkTheme,
+          title: 'Motives-T',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
           themeMode: state.themeMode,
-          home:MainScreen(),
+          home: const MainScreen(),
         );
       },
     );

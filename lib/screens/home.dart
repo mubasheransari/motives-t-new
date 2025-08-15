@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black, // Black background
+      //  backgroundColor: Colors.black, // Black background
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
@@ -75,50 +75,3 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-
-// class MainScreen extends StatefulWidget {
-//   const MainScreen({super.key});
-
-//   @override
-//   State<MainScreen> createState() => _MainScreenState();
-// }
-
-// class _MainScreenState extends State<MainScreen> {
-//   int _selectedIndex = 0;
-
-//   final List<Widget> _pages = const [
-//     DashboardScreen(),
-//     TaskScreen(),
-//     ProfileScreen(),
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: _pages[_selectedIndex], // Shows the selected screen
-//       bottomNavigationBar: BottomNavigationBar(
-             
-//         currentIndex: _selectedIndex,
-//         onTap: (index) {
-//           setState(() {
-//             _selectedIndex = index;
-//           });
-//         },
-//         items: const [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.dashboard_outlined),
-//             label: "Home",
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.task_alt_outlined),
-//             label: "Tasks",
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.person_outline),
-//             label: "Profile",
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

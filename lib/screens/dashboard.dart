@@ -16,10 +16,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-        final themeMode = context.watch<ThemeBloc>().state.themeMode;
-    final isDarkMode = themeMode == ThemeMode.dark;
+  final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
     return Scaffold(
-      backgroundColor: Color(0xFF121212),
+    //  backgroundColor: Color(0xFF121212),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: false,
@@ -30,7 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             textxfontsize: 22,
           ),
         ),
-        backgroundColor: Color(0xFF121212),
+      //  backgroundColor: Color(0xFF121212),
         elevation: 0,
         actions: [
           ShaderMaskText(text: "Dark", textxfontsize: 16),
@@ -38,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             scale: 0.7,
             child: Switch(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              value: isDarkMode,
+              value: isDark,
               activeColor: Colors.purple,
               onChanged: (value) {
                 context.read<ThemeBloc>().add(ToggleThemeEvent(value));
