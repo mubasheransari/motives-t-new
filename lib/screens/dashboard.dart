@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:motives_tneww/theme_change/theme_bloc.dart';
+import 'package:motives_tneww/theme_change/theme_event.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -9,9 +12,12 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   bool isAvailable = false;
+  
 
   @override
   Widget build(BuildContext context) {
+        final themeMode = context.watch<ThemeBloc>().state.themeMode;
+    final isDarkMode = themeMode == ThemeMode.dark;
     return Scaffold(
       backgroundColor: Color(0xFF121212),
       appBar: AppBar(
@@ -32,13 +38,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             scale: 0.7,
             child: Switch(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              value: isAvailable,
+              value: isDarkMode,
               activeColor: Colors.purple,
               onChanged: (value) {
-                setState(() {
-                  isAvailable = value;
-                  // Here you can trigger theme change in your main app
-                });
+                context.read<ThemeBloc>().add(ToggleThemeEvent(value));
+                // setState(() {
+                //   isAvailable = value;
+                //   // Here you can trigger theme change in your main app
+                // });
               },
             ),
           ),
