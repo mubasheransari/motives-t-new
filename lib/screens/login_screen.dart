@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motives_tneww/screens/dashboard.dart';
 import 'package:motives_tneww/screens/home.dart';
 import 'package:motives_tneww/screens/mark_attendance_screen.dart';
+import 'package:motives_tneww/theme_change/theme_bloc.dart';
+import 'package:motives_tneww/theme_change/theme_event.dart';
 
 class LoginScreenDark extends StatefulWidget {
   const LoginScreenDark({super.key});
@@ -18,20 +21,50 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
 
   @override
   Widget build(BuildContext context) {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+    //  backgroundColor: isDark ? Colors.transparent :  Color(0xFF121212),
       appBar: AppBar(
-        title: ShaderMaskText(text: "Login", textxfontsize: 25),
+        title: ShaderMaskText(text: "Login".toUpperCase(), textxfontsize: 24),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+actions: [
+  IconButton(
+    icon: Icon(
+      isDark ? Icons.wb_sunny : Icons.nightlight_round,
+      size: 20,
+      color:    isDark ? Colors.white : Colors.black
+    ),
+    tooltip: isDark ? "Switch to Light Theme" : "Switch to Dark Theme",
+    onPressed: () {
+      context.read<ThemeBloc>().add(ToggleThemeEvent(!isDark));
+    },
+  ),
+]
+
+    /*          actions: [
+          ShaderMaskText(text:isDark ?  "Change to Light":"Change to Dark", textxfontsize: 13),
+          Transform.scale(
+            scale: 0.6,
+            child: Switch(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              value: isDark,
+              activeColor: Colors.purple,
+              onChanged: (value) {
+                context.read<ThemeBloc>().add(ToggleThemeEvent(value));
+            ;
+              },
+            ),
+          ),
+        ],*/
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
-          color: const Color(0xFF1E1E1E),
+          color: isDark ?  Color(0xFF1E1E1E): Colors.white,
           elevation: 8,
-          shadowColor: Colors.purple.withOpacity(0.4),
+          shadowColor:  isDark ?  Colors.purple.withOpacity(0.4):Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),

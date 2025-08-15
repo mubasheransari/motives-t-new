@@ -107,7 +107,7 @@ class _TaskScreenState extends State<TaskScreen> {
           ),
 
           // BOTTOM glassmorphic panel
-     /*     Positioned(
+          /*     Positioned(
             bottom: MediaQuery.of(context).padding.bottom + 16,
             child: _GlassCard(
               width: overlayWidth,

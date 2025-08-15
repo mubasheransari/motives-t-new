@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       //  backgroundColor: Color(0xFF121212),
         elevation: 0,
         actions: [
-          ShaderMaskText(text:isDark ?  "Change to Light":"Change to Dark", textxfontsize: 13),
+         // ShaderMaskText(text:isDark ?  "Change to Light":"Change to Dark", textxfontsize: 13),
           Transform.scale(
             scale: 0.6,
             child: Switch(
@@ -148,7 +148,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required Color color1,
     required Color color2,
   }) {
-      final isDark = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(16),
