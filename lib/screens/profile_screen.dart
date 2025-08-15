@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:motives_tneww/theme_change/theme_bloc.dart';
+
 class ProfileScreenNew extends StatelessWidget {
   // final String name;
   // final String email;
@@ -11,8 +14,9 @@ class ProfileScreenNew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+          final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
     return Scaffold(
-      backgroundColor: Color(0xFF121212), // Dark background
+ //     backgroundColor: Color(0xFF121212), // Dark background
       appBar: AppBar(
         title: ShaderMaskText(
           text: "Profile Details",
@@ -25,9 +29,9 @@ class ProfileScreenNew extends StatelessWidget {
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(24.0),
           child: Card(
-            color: Color(0xFF1E1E1E), // Dark card
+            color:isDark ? Color(0xFF1E1E1E):Colors.white, // Dark card
             elevation: 8,
             shadowColor: Colors.purple.withOpacity(0.4),
             shape: RoundedRectangleBorder(
@@ -38,16 +42,35 @@ class ProfileScreenNew extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ShaderMaskText(
-                    text: "Test User",
-                    textxfontsize: 22,
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ShaderMaskText(
+                        text: "Test User",
+                        textxfontsize: 22,
+                      ),
+                                        Container(
+                    height: 80,
+                    width: 80,
+                    decoration:BoxDecoration(
+                      gradient: LinearGradient(          colors: [Colors.cyan, Colors.purpleAccent],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,),
+                     // color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(40)
+                    ),
+                    child: Center(child: IconButton(onPressed: (){}, icon: Icon(Icons.person_add)))),
+                    ],
                   ),
                   SizedBox(height: 20),
-                  _profileDetail("📧 Email", "testuser@gmail.com"),
+                  _profileDetail("🆔 Employee ID ", "11223",context),
+                   SizedBox(height: 12),
+                    _profileDetail("📧 Email", "testuser@gmail.com",context),
                   SizedBox(height: 12),
-                  _profileDetail("📱 Phone", "+14743829743"),
+                  _profileDetail("📱 Phone", "+14743829743",context),
                   SizedBox(height: 12),
-                  _profileDetail("🏠 Address", "test address"),
+                  _profileDetail("🏠 Address", "Address: A/22, S.I.T.E, MAURIPUR ROAD, KARACHI.",context),
                 ],
               ),
             ),
@@ -57,16 +80,17 @@ class ProfileScreenNew extends StatelessWidget {
     );
   }
 
-  Widget _profileDetail(String title, String value) {
+  Widget _profileDetail(String title, String value,BuildContext context) {
+        final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
           style: TextStyle(
-            fontSize: 14,
-            color: Colors.white54,
-            fontWeight: FontWeight.w500,
+            fontSize: 17,
+            color: isDark ? Colors.white:Color(0xFF1E1E1E),
+            fontWeight: FontWeight.w400,
           ),
         ),
         SizedBox(height: 4),
@@ -74,8 +98,8 @@ class ProfileScreenNew extends StatelessWidget {
           value,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
+         color: isDark ? Colors.white:Color(0xFF1E1E1E),
+            fontWeight: FontWeight.w300,
           ),
         ),
       ],

@@ -30,21 +30,26 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
         backgroundColor: Colors.transparent,
         elevation: 0,
 actions: [
-       Transform.scale(
-            scale: 0.6,
-            child: Switch(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              value: isDark,
-              activeColor: Colors.purple,
-              onChanged: (value) {
-                context.read<ThemeBloc>().add(ToggleThemeEvent(value));
-                // setState(() {
-                //   isAvailable = value;
-                //   // Here you can trigger theme change in your main app
-                // });
-              },
-            ),
-          ),
+       Row(
+         children: [//isDark ? "☀️" : "🌙",
+        //  ShaderMaskText(text: isDark ? "☀️" : "🌙".toUpperCase(), textxfontsize: 24),
+           Transform.scale(
+                scale: 0.6,
+                child: Switch(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  value: isDark,
+                  activeColor: Colors.purple,
+                  onChanged: (value) {
+                    context.read<ThemeBloc>().add(ToggleThemeEvent(value));
+                    // setState(() {
+                    //   isAvailable = value;
+                    //   // Here you can trigger theme change in your main app
+                    // });
+                  },
+                ),
+              ),
+         ],
+       ),
   // IconButton(
   //   icon: Icon(
   //     isDark ? Icons.wb_sunny : Icons.nightlight_round,
