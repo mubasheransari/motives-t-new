@@ -32,9 +32,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       //  backgroundColor: Color(0xFF121212),
         elevation: 0,
         actions: [
-          ShaderMaskText(text: "Dark", textxfontsize: 16),
+          ShaderMaskText(text:isDark ?  "Change to Light":"Change to Dark", textxfontsize: 13),
           Transform.scale(
-            scale: 0.7,
+            scale: 0.6,
             child: Switch(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               value: isDark,
@@ -148,6 +148,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required Color color1,
     required Color color2,
   }) {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -192,10 +193,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildMenuButton(IconData icon, String label) {
+      final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               colors: [Colors.purple, Colors.blue],
@@ -211,13 +213,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               )
             ],
           ),
-          child: Icon(icon, size: 28, color: Colors.white),
+          child: Icon(icon, size: 24, color: Colors.white),
         ),
         const SizedBox(height: 6),
         Text(
           label,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 12, color: Colors.white70),
+          style: TextStyle(fontSize: 12, color: isDark ? Colors.white : Colors.black,),
         ),
       ],
     );

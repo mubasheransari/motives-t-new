@@ -36,12 +36,26 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts:
   fl_chart:
-  google_maps_flutter:
-  image_picker:
   video_player:
   fluttertoast:
   flutter_bloc: ^8.1.3
   shared_preferences: ^2.2.2
+  google_maps_flutter:
+  location:
+  connectivity_plus:
+  geocoding: 
+  intl:
+  http:
+  geolocator:
+  flutter_polyline_points: ^3.0.1
+  image_picker: ^1.1.1
+  get_storage:
+  percent_indicator: ^4.2.2
+  persistent_shopping_cart: 
+  syncfusion_flutter_gauges:
+  image: ^4.0.17
+  carousel_slider: ^5.1.1
+  flutter_local_authentication: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -66,8 +80,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

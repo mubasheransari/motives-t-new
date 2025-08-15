@@ -41,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -68,8 +69,8 @@ class _MainScreenState extends State<MainScreen> {
         ],
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        selectedItemColor: Colors.white, // overridden by gradient
-        unselectedItemColor: Colors.white, // overridden by gradient
+        selectedItemColor: isDark ? Colors.white : Colors.black,
+        unselectedItemColor: isDark ? Colors.white : Colors.black,
       ),
     );
   }

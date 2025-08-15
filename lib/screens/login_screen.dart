@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:motives_tneww/screens/dashboard.dart';
+import 'package:motives_tneww/screens/home.dart';
+import 'package:motives_tneww/screens/mark_attendance_screen.dart';
 
 class LoginScreenDark extends StatefulWidget {
   const LoginScreenDark({super.key});
@@ -68,11 +70,11 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DashboardScreen()));
+                            builder: (context) => MarkAttendanceView()));
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 14),
+                        horizontal: 10, vertical:11),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [Colors.cyan, Colors.purpleAccent],
@@ -85,7 +87,7 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
                     child: const Text(
                       "Login",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),

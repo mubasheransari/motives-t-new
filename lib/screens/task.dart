@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:motives_tneww/screens/dashboard.dart';
+import 'package:motives_tneww/widget/glass_card.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({super.key});
@@ -76,7 +77,7 @@ class _TaskScreenState extends State<TaskScreen> {
           // TOP glassmorphic bar
           Positioned(
             top: MediaQuery.of(context).padding.top + 12,
-            child: _GlassCard(
+            child: GlassCard(
               width: overlayWidth,
               height: 50,
               borderRadius: 16,
@@ -294,53 +295,53 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 }
 
-class _GlassCard extends StatelessWidget {
-  final double width;
-  final double height;
-  final double borderRadius;
-  final Widget child;
+// class _GlassCard extends StatelessWidget {
+//   final double width;
+//   final double height;
+//   final double borderRadius;
+//   final Widget child;
 
-  const _GlassCard({
-    required this.width,
-    required this.height,
-    required this.borderRadius,
-    required this.child,
-  });
+//   const _GlassCard({
+//     required this.width,
+//     required this.height,
+//     required this.borderRadius,
+//     required this.child,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-        child: Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.white.withOpacity(0.25),
-                Colors.white.withOpacity(0.10),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: child,
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ClipRRect(
+//       borderRadius: BorderRadius.circular(borderRadius),
+//       child: BackdropFilter(
+//         filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+//         child: Container(
+//           width: width,
+//           height: height,
+//           decoration: BoxDecoration(
+//             gradient: LinearGradient(
+//               colors: [
+//                 Colors.white.withOpacity(0.25),
+//                 Colors.white.withOpacity(0.10),
+//               ],
+//               begin: Alignment.topLeft,
+//               end: Alignment.bottomRight,
+//             ),
+//             borderRadius: BorderRadius.circular(borderRadius),
+//             border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Colors.black.withOpacity(0.08),
+//                 blurRadius: 16,
+//                 offset: const Offset(0, 6),
+//               ),
+//             ],
+//           ),
+//           child: child,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _Place {
   final String name;

@@ -4,11 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'theme_event.dart';
 import 'theme_state.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'theme_event.dart';
-import 'theme_state.dart';
-
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   static const _key = 'isDarkMode';
 
