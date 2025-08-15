@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motives_tneww/screens/profile_screen.dart';
+import 'package:motives_tneww/screens/timecard_screen.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_event.dart';
 
@@ -147,7 +148,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildMenuButton(Icons.access_time, "Time\nCard"),
+                      InkWell(
+                        onTap: (){
+                          showTimeCardPopup(context);
+                        },
+                        child: _buildMenuButton(Icons.access_time, "Time\nCard")),
                        InkWell(
                         onTap:(){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreenNew()));
