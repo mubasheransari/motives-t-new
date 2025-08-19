@@ -5,8 +5,10 @@ import 'package:motives_tneww/screens/home.dart';
 import 'package:motives_tneww/screens/splash.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_state.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
-void main() {
+void main() async{
+  await PersistentShoppingCart().init();
     WidgetsFlutterBinding.ensureInitialized();
   runApp(
     BlocProvider(

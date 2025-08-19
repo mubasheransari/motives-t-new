@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:motives_tneww/Features/punch_order/punch_order.dart';
 import 'package:motives_tneww/screens/dashboard.dart';
 import 'package:motives_tneww/screens/profile_screen.dart';
 import 'package:motives_tneww/screens/task.dart';
@@ -16,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     DashboardScreen(),
     TaskScreen(),
-    ProfileScreen()
+   PunchOrderView() //ProfileScreen()
   ];
 
   Widget _buildGradientIcon(IconData iconData) {
