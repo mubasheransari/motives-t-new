@@ -122,7 +122,7 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
                  Navigator.push(context, MaterialPageRoute(builder: (context)=> MainScreen()));
                   },
                 ),
-                 GradientText("OR", fontSize: 18),
+                 Center(child: GradientText("OR", fontSize: 18)),
                  IconButton(onPressed: _authenticate, icon: Icon(Icons.face)),
                 const SizedBox(height: 12),
                 TextButton(
