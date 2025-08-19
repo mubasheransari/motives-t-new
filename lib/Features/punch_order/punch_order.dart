@@ -1,11 +1,16 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motives_tneww/Features/punch_order/cart_screen.dart';
 import 'package:motives_tneww/Models/product_model.dart';
 
 import 'package:flutter/material.dart';
+import 'package:motives_tneww/screens/dashboard.dart';
+import 'package:motives_tneww/theme_change/theme_bloc.dart';
 
 
 import 'package:persistent_shopping_cart/model/cart_model.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
+
+
 
 class PunchOrderView extends StatefulWidget {
   const PunchOrderView({super.key});
@@ -89,11 +94,18 @@ class _PunchOrderViewState extends State<PunchOrderView> {
 
   @override
   Widget build(BuildContext context) {
+      final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 70,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: const Text('Punch Order'),
+      //  backgroundColor: Colors.white,
+        title:           Padding(
+          padding: const EdgeInsets.only(top:4.0),
+          child: ShaderMaskText(
+                text: 'Punch Order',
+                textxfontsize: 19),
+        ),
         actions: [
           // Cart button (navigates to cart)
           IconButton(
@@ -117,7 +129,7 @@ class _PunchOrderViewState extends State<PunchOrderView> {
           ),
         ],
       ),
-      backgroundColor: Colors.white,
+     // backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -169,7 +181,9 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
     return Card(
+      color: isDark ? const Color(0xFF1E1E1E) : Colors.grey[200],
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
@@ -180,6 +194,7 @@ class ProductCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.asset(
+               // color: Colors.transparent,
                 product.imageUrl,
                 width: 80,  // reduced image size
                 height: 125,
