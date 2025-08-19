@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:motives_tneww/screens/home.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_event.dart';
+import 'package:motives_tneww/widget/toast_widget.dart';
 
 
 class LoginScreenDark extends StatefulWidget {
@@ -17,6 +19,41 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
   //i want same design like this for profile screen including fields of Name, emloyee ID, Phone and address
+
+  final LocalAuthentication auth = LocalAuthentication();
+  String _message = "Not authenticated";
+
+  Future<void> _authenticate() async {
+    try {
+      final bool canCheckBiometrics = await auth.canCheckBiometrics;
+      final bool isDeviceSupported = await auth.isDeviceSupported();
+
+      if (!canCheckBiometrics || !isDeviceSupported) {
+        setState(() {
+          _message = "Biometric authentication not available";
+        });
+        return;
+      }
+
+      final bool didAuthenticate = await auth.authenticate(
+        localizedReason: 'Please authenticate to access the app',
+        options:  AuthenticationOptions(
+          biometricOnly: true, // only face/fingerprint
+          stickyAuth: true,
+          useErrorDialogs: true,
+        ),
+      );
+
+      setState(() {
+        _message = didAuthenticate ? "Authentication successful ✅" : "Failed ❌";
+      });
+      toastWidget("$_message",  Colors.green);
+    } catch (e) {
+      setState(() {
+        _message = "Error: $e";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +122,8 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
                  Navigator.push(context, MaterialPageRoute(builder: (context)=> MainScreen()));
                   },
                 ),
+                 GradientText("OR", fontSize: 18),
+                 IconButton(onPressed: _authenticate, icon: Icon(Icons.face)),
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () {},
