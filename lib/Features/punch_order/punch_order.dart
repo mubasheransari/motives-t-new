@@ -20,12 +20,12 @@ class PunchOrderView extends StatefulWidget {
 
 class _PunchOrderViewState extends State<PunchOrderView> {
   final List<Product> _products = [
-    Product(title: 'Mezan Hardum', sku: 'SKU001', imageUrl: 'assets/product1.jfif', price: 29.99),
-    Product(title: 'Mezan Ultra Rich', sku: 'SKU002', imageUrl: 'assets/product2.jfif', price: 49.99),
-    Product(title: 'Mezan Danedar', sku: 'SKU003', imageUrl: 'assets/product3.jfif', price: 19.99),
-    Product(title: 'Hardum Mixture', sku: 'SKU004', imageUrl: 'assets/product4.jfif', price: 39.99),
-    Product(title: 'Hardum Mix 5', sku: 'SKU005', imageUrl: 'assets/product5.jfif', price: 39.99),
-    Product(title: 'Hardum Mix 6', sku: 'SKU006', imageUrl: 'assets/product6.jfif', price: 39.99),
+    Product(title: 'Mezan Hardum', sku: 'SKU001', imageUrl: 'assets/product1-removebg-preview.png', price: 29.99),
+    Product(title: 'Mezan Ultra Rich', sku: 'SKU002', imageUrl: 'assets/product2-removebg-preview.png', price: 49.99),
+    Product(title: 'Mezan Danedar', sku: 'SKU003', imageUrl: 'assets/product3-removebg-preview.png', price: 19.99),
+    Product(title: 'Hardum Mixture', sku: 'SKU004', imageUrl: 'assets/product4-removebg-preview.png', price: 39.99),
+    Product(title: 'Hardum Mix 5', sku: 'SKU005', imageUrl: 'assets/product5-removebg-preview.png', price: 39.99),
+    Product(title: 'Hardum Mix 6', sku: 'SKU006', imageUrl: 'assets/product6-removebg-preview.png', price: 39.99),
   ];
 
   // map sku -> quantity (keeps UI in sync)
@@ -94,7 +94,6 @@ class _PunchOrderViewState extends State<PunchOrderView> {
 
   @override
   Widget build(BuildContext context) {
-      final isDark = context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
