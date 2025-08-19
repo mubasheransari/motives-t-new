@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_event.dart';
-
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -47,18 +44,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: [
-          Transform.scale(
-            scale: 0.8,
-            child: Switch(
-              value: isDark,
-              activeColor: Colors.purple,
-              onChanged: (value) {
-                context.read<ThemeBloc>().add(ToggleThemeEvent(value));
-              },
-            ),
-          ),
-        ],
+        // actions: [
+        //   Transform.scale(
+        //     scale: 0.8,
+        //     child: Switch(
+        //       value: isDark,
+        //       activeColor: Colors.purple,
+        //       onChanged: (value) {
+        //         context.read<ThemeBloc>().add(ToggleThemeEvent(value));
+        //       },
+        //     ),
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

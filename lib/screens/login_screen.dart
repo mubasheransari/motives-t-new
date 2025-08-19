@@ -30,7 +30,7 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
         elevation: 0,
         actions: [
           Transform.scale(
-            scale: 0.8,
+            scale: 0.6,
             child: Switch(
               value: isDark,
               activeColor: Colors.purple,
@@ -44,7 +44,7 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Card(
-          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.grey[200],
           elevation: 8,
           shadowColor: isDark ? Colors.purple.withOpacity(0.4) : Colors.grey.withOpacity(0.2),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -53,7 +53,15 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height:20),
+                Center(
+              child: Image.asset(
+            'assets/logo.png',
+            height: 130,
+            width: 130,
+            color:isDark ? Colors.white :Colors.black ,
+          )),
+          const SizedBox(height:20),
                 GradientText("Welcome Back", fontSize: 22),
                 const SizedBox(height: 20),
                 _customTextField(
