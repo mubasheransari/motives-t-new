@@ -122,33 +122,69 @@ class _PunchOrderViewState extends State<PunchOrderView> {
           child: ShaderMaskText(text: 'Punch Order', textxfontsize: 22),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: _openCartScreen,
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(right: 12, top: 12),
-            child: PersistentShoppingCart().showCartItemCountWidget(
-              cartItemCountWidgetBuilder: (count) {
-                if (count <= 0) return const SizedBox.shrink();
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    count.toString(),
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                );
-              },
+          Stack(
+  clipBehavior: Clip.none,
+  children: [
+    IconButton(
+      icon: const Icon(Icons.shopping_cart_outlined,size: 30,),
+      onPressed: _openCartScreen,
+    ),
+    Positioned(
+      right: 6,
+      top: 6,
+      child: PersistentShoppingCart().showCartItemCountWidget(
+        cartItemCountWidgetBuilder: (count) {
+          if (count <= 0) return const SizedBox.shrink();
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(10),
             ),
-          ),
+            constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+            child: Text(
+              count.toString(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+        },
+      ),
+    ),
+  ],
+),
+
+          // IconButton(
+          //   icon: const Icon(Icons.shopping_cart_outlined),
+          //   onPressed: _openCartScreen,
+          // ),
+
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 12, top: 12),
+          //   child: PersistentShoppingCart().showCartItemCountWidget(
+          //     cartItemCountWidgetBuilder: (count) {
+          //       if (count <= 0) return const SizedBox.shrink();
+          //       return Container(
+          //         padding: const EdgeInsets.symmetric(
+          //           horizontal: 8,
+          //           vertical: 2,
+          //         ),
+          //         decoration: BoxDecoration(
+          //           color: Colors.red,
+          //           borderRadius: BorderRadius.circular(12),
+          //         ),
+          //         child: Text(
+          //           count.toString(),
+          //           style: const TextStyle(color: Colors.white, fontSize: 12),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
       body: SingleChildScrollView(
