@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
@@ -19,7 +17,6 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
-  //i want same design like this for profile screen including fields of Name, emloyee ID, Phone and address
 
   final LocalAuthentication auth = LocalAuthentication();
   String _authMessage = "Not authenticated";
@@ -41,57 +38,18 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
         setState(() {
           isAuthorized = true;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✅ Authentication successful!')),
-        );
+        toastWidget("✅ Authentication successful!", Colors.green);
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainScreen()));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('❌ Authentication failed!')),
-        );
+        toastWidget("❌ Authentication failed!", Colors.red);
       }
     } catch (e) {
       debugPrint("Auth error: $e");
     }
   }
 
-  /*Future<void> _authenticate() async {
-    try {
-      final bool canCheckBiometrics = await auth.canCheckBiometrics;
-      final bool isDeviceSupported = await auth.isDeviceSupported();
-
-      if (!canCheckBiometrics || !isDeviceSupported) {
-        setState(() {
-          _authMessage = "Biometric authentication not available";
-        });
-        return;
-      }
-
-      final bool didAuthenticate = await auth.authenticate(
-        localizedReason: 'Please authenticate to access the map',
-        options: const AuthenticationOptions(
-          biometricOnly: true,
-          stickyAuth: true,
-          useErrorDialogs: true,
-        ),
-      );
-
-      setState(() {
-        _authMessage = didAuthenticate
-            ? "✅ Authentication successful"
-            : "❌ Authentication failed";
-      });
-    } catch (e) {
-      setState(() {
-        _authMessage = "Error: $e";
-      });
-    }
-  }*/
-
-  @override
-  void initState() {
-    super.initState();
-    _authenticate(); // ask auth when screen loads
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,12 +122,22 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
                         MaterialPageRoute(builder: (context) => MainScreen()));
                   },
                 ),
+                const SizedBox(height: 18),
                 Center(child: GradientText("OR", fontSize: 18)),
-                IconButton(
-                    onPressed: () {
-                      _authenticate();
-                    },
-                    icon: Icon(Icons.face)),
+                const SizedBox(height: 18),
+                InkWell(
+                  onTap: () {
+                    _authenticate();
+                  },
+                  child: Center(
+                      child: Image.asset(
+                    'assets/faceid_icon.png',
+                    height: 50,
+                    width: 50,
+                    color: isDark ? Colors.white : Colors.black,
+                  )),
+                ),
+              
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () {},
@@ -283,193 +251,3 @@ class GradientButton extends StatelessWidget {
     );
   }
 }
-
-/*
-class LoginScreenDark extends StatefulWidget {
-  const LoginScreenDark({super.key});
-
-  @override
-  State<LoginScreenDark> createState() => _LoginScreenDarkState();
-}
-
-class _LoginScreenDarkState extends State<LoginScreenDark> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  bool isPasswordVisible = false;
-
-  @override
-  Widget build(BuildContext context) {
-      final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-    //  backgroundColor: isDark ? Colors.transparent :  Color(0xFF121212),
-      appBar: AppBar(
-        title: ShaderMaskText(text: "Login".toUpperCase(), textxfontsize: 24),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-actions: [
-       Row(
-         children: [//isDark ? "☀️" : "🌙",
-        //  ShaderMaskText(text: isDark ? "☀️" : "🌙".toUpperCase(), textxfontsize: 24),
-           Transform.scale(
-                scale: 0.6,
-                child: Switch(
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  value: isDark,
-                  activeColor: Colors.purple,
-                  onChanged: (value) {
-                    context.read<ThemeBloc>().add(ToggleThemeEvent(value));
-                    // setState(() {
-                    //   isAvailable = value;
-                    //   // Here you can trigger theme change in your main app
-                    // });
-                  },
-                ),
-              ),
-         ],
-       ),
-  // IconButton(
-  //   icon: Icon(
-  //     isDark ? Icons.wb_sunny : Icons.nightlight_round,
-  //     size: 20,
-  //     color:    isDark ? Colors.white : Colors.black
-  //   ),
-  //   tooltip: isDark ? "Switch to Light Theme" : "Switch to Dark Theme",
-  //   onPressed: () {
-  //     context.read<ThemeBloc>().add(ToggleThemeEvent(!isDark));
-  //   },
-  // ),
-]
-
-    /*          actions: [
-          ShaderMaskText(text:isDark ?  "Change to Light":"Change to Dark", textxfontsize: 13),
-          Transform.scale(
-            scale: 0.6,
-            child: Switch(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              value: isDark,
-              activeColor: Colors.purple,
-              onChanged: (value) {
-                context.read<ThemeBloc>().add(ToggleThemeEvent(value));
-            ;
-              },
-            ),
-          ),
-        ],*/
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Card(
-          color: isDark ?  Color(0xFF1E1E1E): Colors.white,
-          elevation: 8,
-          shadowColor:  isDark ?  Colors.purple.withOpacity(0.4):Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.10,
-                ),
-                ShaderMaskText(
-                  text: "Welcome Back",
-                  textxfontsize: 22,
-                ),
-                const SizedBox(height: 20),
-
-                _customTextField(
-                  controller: emailController,
-                  hint: "Email Address",
-                  icon: Icons.email_outlined,
-                ),
-                const SizedBox(height: 16),
-
-                _customTextField(
-                  controller: passwordController,
-                  hint: "Password",
-                  icon: Icons.lock_outline,
-                  isPassword: true,
-                ),
-                const SizedBox(height: 24),
-
-                // Stylish Gradient Button
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MarkAttendanceView()));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical:11),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Colors.cyan, Colors.purpleAccent],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _customTextField({
-    required TextEditingController controller,
-    required String hint,
-    required IconData icon,
-    bool isPassword = false,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: isPassword && !isPasswordVisible,
-      style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white54),
-        prefixIcon: Icon(icon, color: Colors.cyan),
-        suffixIcon: isPassword
-            ? IconButton(
-                icon: Icon(
-                  isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.white54,
-                ),
-                onPressed: () {
-                  setState(() {
-                    isPasswordVisible = !isPasswordVisible;
-                  });
-                },
-              )
-            : null,
-        filled: true,
-        fillColor: const Color(0xFF2A2A2A),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
-}
-
-*/
