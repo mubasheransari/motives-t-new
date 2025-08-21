@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
@@ -5,7 +7,6 @@ import 'package:motives_tneww/screens/home.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_event.dart';
 import 'package:motives_tneww/widget/toast_widget.dart';
-
 
 class LoginScreenDark extends StatefulWidget {
   const LoginScreenDark({super.key});
@@ -21,38 +22,75 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
   //i want same design like this for profile screen including fields of Name, emloyee ID, Phone and address
 
   final LocalAuthentication auth = LocalAuthentication();
-  String _message = "Not authenticated";
+  String _authMessage = "Not authenticated";
+
+  bool isAuthorized = false;
 
   Future<void> _authenticate() async {
+    try {
+      bool didAuthenticate = await auth.authenticate(
+        localizedReason: 'Please authenticate to continue',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
+          useErrorDialogs: true,
+        ),
+      );
+
+      if (didAuthenticate) {
+        setState(() {
+          isAuthorized = true;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('✅ Authentication successful!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('❌ Authentication failed!')),
+        );
+      }
+    } catch (e) {
+      debugPrint("Auth error: $e");
+    }
+  }
+
+  /*Future<void> _authenticate() async {
     try {
       final bool canCheckBiometrics = await auth.canCheckBiometrics;
       final bool isDeviceSupported = await auth.isDeviceSupported();
 
       if (!canCheckBiometrics || !isDeviceSupported) {
         setState(() {
-          _message = "Biometric authentication not available";
+          _authMessage = "Biometric authentication not available";
         });
         return;
       }
 
       final bool didAuthenticate = await auth.authenticate(
-        localizedReason: 'Please authenticate to access the app',
-        options:  AuthenticationOptions(
-          biometricOnly: true, // only face/fingerprint
+        localizedReason: 'Please authenticate to access the map',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
           stickyAuth: true,
           useErrorDialogs: true,
         ),
       );
 
       setState(() {
-        _message = didAuthenticate ? "Authentication successful ✅" : "Failed ❌";
+        _authMessage = didAuthenticate
+            ? "✅ Authentication successful"
+            : "❌ Authentication failed";
       });
-      toastWidget("$_message",  Colors.green);
     } catch (e) {
       setState(() {
-        _message = "Error: $e";
+        _authMessage = "Error: $e";
       });
     }
+  }*/
+
+  @override
+  void initState() {
+    super.initState();
+    _authenticate(); // ask auth when screen loads
   }
 
   @override
@@ -83,22 +121,25 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
         child: Card(
           color: isDark ? const Color(0xFF1E1E1E) : Colors.grey[200],
           elevation: 8,
-          shadowColor: isDark ? Colors.purple.withOpacity(0.4) : Colors.grey.withOpacity(0.2),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shadowColor: isDark
+              ? Colors.purple.withOpacity(0.4)
+              : Colors.grey.withOpacity(0.2),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height:20),
+                const SizedBox(height: 20),
                 Center(
-              child: Image.asset(
-            'assets/logo.png',
-            height: 130,
-            width: 130,
-            color:isDark ? Colors.white :Colors.black ,
-          )),
-          const SizedBox(height:20),
+                    child: Image.asset(
+                  'assets/logo.png',
+                  height: 130,
+                  width: 130,
+                  color: isDark ? Colors.white : Colors.black,
+                )),
+                const SizedBox(height: 20),
                 GradientText("Welcome Back", fontSize: 22),
                 const SizedBox(height: 20),
                 _customTextField(
@@ -119,11 +160,16 @@ class _LoginScreenDarkState extends State<LoginScreenDark> {
                 GradientButton(
                   text: "Login",
                   onTap: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context)=> MainScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainScreen()));
                   },
                 ),
-                 Center(child: GradientText("OR", fontSize: 18)),
-                 IconButton(onPressed: _authenticate, icon: Icon(Icons.face)),
+                Center(child: GradientText("OR", fontSize: 18)),
+                IconButton(
+                    onPressed: () {
+                      _authenticate();
+                    },
+                    icon: Icon(Icons.face)),
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () {},
@@ -229,7 +275,8 @@ class GradientButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
