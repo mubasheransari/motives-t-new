@@ -12,10 +12,10 @@ class Product {
 
 class ProductHomeScreen extends StatelessWidget {
   final List<Product> horizontalProducts = [
-    Product('https://i.imgur.com/Upk0DjN.png', '\$34.00', 'Stripe Details Jersey Track Top', 'Men\'s shoes'),
-    Product('https://i.imgur.com/Dx3X7F3.png', '\$27.00', 'Nike Air Force 1 Low Look Retro', 'Men\'s shoes'),
-    Product('https://i.imgur.com/Upk0DjN.png', '\$34.00', 'Stripe Details Jersey Track Top', 'Men\'s shoes'),
-    Product('https://i.imgur.com/Dx3X7F3.png', '\$27.00', 'Nike Air Force 1 Low Look Retro', 'Men\'s shoes'),
+    Product('https://i.imgur.com/Upk0DjN.png', '34.00', 'Stripe Details Jersey Track Top', 'Men\'s shoes'),
+    Product('https://i.imgur.com/Dx3X7F3.png', '27.00', 'Nike Air Force 1 Low Look Retro', 'Men\'s shoes'),
+    Product('https://i.imgur.com/Upk0DjN.png', '34.00', 'Stripe Details Jersey Track Top', 'Men\'s shoes'),
+    Product('https://i.imgur.com/Dx3X7F3.png', '27.00', 'Nike Air Force 1 Low Look Retro', 'Men\'s shoes'),
   ];
 
   final List<Product> verticalProducts = [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_shopping_cart/persistent_shopping_cart.dart' show PersistentShoppingCart;
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart'
+    show PersistentShoppingCart;
 
 class CartScreen extends StatefulWidget {
   final VoidCallback? onChange;
@@ -39,11 +40,13 @@ class _CartScreenState extends State<CartScreen> {
               final item = cartItems[index];
               // item is PersistentShoppingCartItem
               return ListTile(
-                leading: (item.productThumbnail != null && item.productThumbnail!.isNotEmpty)
-                    ? Image.asset(item.productThumbnail!, width: 55, height: 55, fit: BoxFit.cover)
+                leading: (item.productThumbnail != null &&
+                        item.productThumbnail!.isNotEmpty)
+                    ? Image.asset(item.productThumbnail!,
+                        width: 55, height: 55, fit: BoxFit.cover)
                     : const SizedBox(width: 55, height: 55),
                 title: Text(item.productName),
-                subtitle: Text('Unit: \$${item.unitPrice.toStringAsFixed(2)}'),
+                subtitle: Text('Unit: ${item.unitPrice.toStringAsFixed(2)}'),
                 trailing: SizedBox(
                   width: 160,
                   child: Row(
@@ -53,27 +56,33 @@ class _CartScreenState extends State<CartScreen> {
                         icon: const Icon(Icons.remove_circle_outline),
                         onPressed: () async {
                           if (item.quantity <= 1) {
-                            await PersistentShoppingCart().removeFromCart(item.productId);
+                            await PersistentShoppingCart()
+                                .removeFromCart(item.productId);
                           } else {
-                            await PersistentShoppingCart().decrementCartItemQuantity(item.productId);
+                            await PersistentShoppingCart()
+                                .decrementCartItemQuantity(item.productId);
                           }
                           widget.onChange?.call();
                           setState(() {});
                         },
                       ),
-                      Text(item.quantity.toString(), style: const TextStyle(fontSize: 16)),
+                      Text(item.quantity.toString(),
+                          style: const TextStyle(fontSize: 16)),
                       IconButton(
                         icon: const Icon(Icons.add_circle_outline),
                         onPressed: () async {
-                          await PersistentShoppingCart().incrementCartItemQuantity(item.productId);
+                          await PersistentShoppingCart()
+                              .incrementCartItemQuantity(item.productId);
                           widget.onChange?.call();
                           setState(() {});
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                        icon: const Icon(Icons.delete_outline,
+                            color: Colors.redAccent),
                         onPressed: () async {
-                          await PersistentShoppingCart().removeFromCart(item.productId);
+                          await PersistentShoppingCart()
+                              .removeFromCart(item.productId);
                           widget.onChange?.call();
                           setState(() {});
                         },
@@ -93,10 +102,17 @@ class _CartScreenState extends State<CartScreen> {
             return Row(
               children: [
                 Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-                    Text('Total: \$${total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text('${PersistentShoppingCart().getCartItemCount()} item(s)', style: const TextStyle(color: Colors.grey)),
-                  ]),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Total: \$${total.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                            '${PersistentShoppingCart().getCartItemCount()} item(s)',
+                            style: const TextStyle(color: Colors.grey)),
+                      ]),
                 ),
                 ElevatedButton(
                   onPressed: PersistentShoppingCart().getCartItemCount() == 0
@@ -107,16 +123,22 @@ class _CartScreenState extends State<CartScreen> {
                             context: context,
                             builder: (_) => AlertDialog(
                               title: const Text('Checkout'),
-                              content: Text('Total: \$${total.toStringAsFixed(2)}'),
+                              content:
+                                  Text('Total: ${total.toStringAsFixed(2)}'),
                               actions: [
-                                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Cancel')),
                                 TextButton(
                                   onPressed: () {
                                     PersistentShoppingCart().clearCart();
                                     widget.onChange?.call();
                                     Navigator.pop(context);
                                     Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Order placed (demo)')));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text('Order placed (demo)')));
                                   },
                                   child: const Text('Place Order'),
                                 ),
