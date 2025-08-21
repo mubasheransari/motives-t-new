@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:motives_tneww/Features/punch_order/punch_order.dart';
+import 'package:motives_tneww/widget/toast_widget.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart'
     show PersistentShoppingCart;
+
+import '../../Models/product_model.dart';
+import '../../screens/dashboard.dart';
 
 class CartScreen extends StatefulWidget {
   final VoidCallback? onChange;
@@ -11,21 +16,30 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  // We rely on the plugin's widgets (showCartItems) which listen to changes;
-  // but we also provide setState after operations to be safe.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('My Cart'), actions: [
-        TextButton(
-          onPressed: () {
-            PersistentShoppingCart().clearCart();
-            widget.onChange?.call();
-            setState(() {});
-          },
-          child: const Text('Clear', style: TextStyle(color: Colors.white)),
-        )
-      ]),
+      appBar: AppBar(
+          toolbarHeight: 70,
+          automaticallyImplyLeading: false,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: ShaderMaskText(text: 'Cart', textxfontsize: 22),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  PersistentShoppingCart().clearCart();
+                  widget.onChange?.call();
+                  setState(() {});
+                  toastWidget("Deleted All Cart Items", Colors.red);
+                },
+                child: Icon(Icons.delete,
+                    size: 25,
+                    color: Colors
+                        .red) //const Text('Clear', style: TextStyle(color: Colors.black)),
+                )
+          ]),
       body: PersistentShoppingCart().showCartItems(
         cartItemsBuilder: (context, cartItems) {
           if (cartItems.isEmpty) {
@@ -35,61 +49,54 @@ class _CartScreenState extends State<CartScreen> {
           return ListView.separated(
             padding: const EdgeInsets.all(12),
             itemCount: cartItems.length,
-            separatorBuilder: (_, __) => const Divider(),
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final item = cartItems[index];
-              // item is PersistentShoppingCartItem
-              return ListTile(
-                leading: (item.productThumbnail != null &&
-                        item.productThumbnail!.isNotEmpty)
-                    ? Image.asset(item.productThumbnail!,
-                        width: 55, height: 55, fit: BoxFit.cover)
-                    : const SizedBox(width: 55, height: 55),
-                title: Text(item.productName),
-                subtitle: Text('Unit: ${item.unitPrice.toStringAsFixed(2)}'),
-                trailing: SizedBox(
-                  width: 160,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        onPressed: () async {
-                          if (item.quantity <= 1) {
-                            await PersistentShoppingCart()
-                                .removeFromCart(item.productId);
-                          } else {
-                            await PersistentShoppingCart()
-                                .decrementCartItemQuantity(item.productId);
-                          }
-                          widget.onChange?.call();
-                          setState(() {});
-                        },
-                      ),
-                      Text(item.quantity.toString(),
-                          style: const TextStyle(fontSize: 16)),
-                      IconButton(
-                        icon: const Icon(Icons.add_circle_outline),
-                        onPressed: () async {
-                          await PersistentShoppingCart()
-                              .incrementCartItemQuantity(item.productId);
-                          widget.onChange?.call();
-                          setState(() {});
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete_outline,
-                            color: Colors.redAccent),
-                        onPressed: () async {
-                          await PersistentShoppingCart()
-                              .removeFromCart(item.productId);
-                          widget.onChange?.call();
-                          setState(() {});
-                        },
-                      ),
-                    ],
+
+              final product = Product(
+                title: item.productName,
+                sku: item.productId,
+                imageUrl: item.productThumbnail ?? "assets/placeholder.png",
+                price: item.unitPrice,
+              );
+
+              return Stack(
+                children: [
+                  ProductCard(
+                    product: product,
+                    quantity: item.quantity,
+                    onIncrement: () async {
+                      await PersistentShoppingCart()
+                          .incrementCartItemQuantity(item.productId);
+                      widget.onChange?.call();
+                      setState(() {});
+                    },
+                    onDecrement: () async {
+                      if (item.quantity <= 1) {
+                        await PersistentShoppingCart()
+                            .removeFromCart(item.productId);
+                      } else {
+                        await PersistentShoppingCart()
+                            .decrementCartItemQuantity(item.productId);
+                      }
+                      widget.onChange?.call();
+                      setState(() {});
+                    },
                   ),
-                ),
+                  Positioned(
+                    top: 0,
+                    right: 2,
+                    child: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.redAccent),
+                      onPressed: () async {
+                        await PersistentShoppingCart()
+                            .removeFromCart(item.productId);
+                        widget.onChange?.call();
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                ],
               );
             },
           );
@@ -106,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Total: \$${total.toStringAsFixed(2)}',
+                        Text('Total: ${total.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         Text(
@@ -114,39 +121,127 @@ class _CartScreenState extends State<CartScreen> {
                             style: const TextStyle(color: Colors.grey)),
                       ]),
                 ),
-                ElevatedButton(
-                  onPressed: PersistentShoppingCart().getCartItemCount() == 0
-                      ? null
-                      : () {
-                          // dummy checkout
-                          showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: const Text('Checkout'),
-                              content:
-                                  Text('Total: ${total.toStringAsFixed(2)}'),
-                              actions: [
-                                TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text('Cancel')),
-                                TextButton(
-                                  onPressed: () {
-                                    PersistentShoppingCart().clearCart();
-                                    widget.onChange?.call();
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content:
-                                                Text('Order placed (demo)')));
-                                  },
-                                  child: const Text('Place Order'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                  child: const Text('Checkout'),
+                SizedBox(
+                  height: 45,
+                  width: 130,
+                  child: InkWell(
+                    onTap: PersistentShoppingCart().getCartItemCount() == 0
+                        ? null
+                        : () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  backgroundColor: Colors.white,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "Are you sure, you want to confirm the order?",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black),
+                                        ),
+                                        SizedBox(height: 25),
+                                        InkWell(
+                                          onTap: () {
+                                            // Navigator.of(context).pop();
+                                            PersistentShoppingCart()
+                                                .clearCart();
+                                            widget.onChange?.call();
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                            toastWidget("Order Confirmed",
+                                                Colors.green);
+                                          },
+                                          child: Ink(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12),
+                                            decoration: BoxDecoration(
+                                              gradient: const LinearGradient(
+                                                colors: [
+                                                  Colors.cyan,
+                                                  Colors.purpleAccent
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'Confirm Order',
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                            /* showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: const Text('Checkout'),
+                                content:
+                                    Text('Total: ${total.toStringAsFixed(2)}'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Cancel')),
+                                  TextButton(
+                                    onPressed: () {
+                                      PersistentShoppingCart().clearCart();
+                                      widget.onChange?.call();
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content:
+                                                  Text('Order placed (demo)')));
+                                    },
+                                    child: const Text('Place Order'),
+                                  ),
+                                ],
+                              ),
+                            );*/
+                          },
+                    borderRadius: BorderRadius.circular(12),
+                    child: Ink(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Colors.cyan, Colors.purpleAccent],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Place Order',
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             );

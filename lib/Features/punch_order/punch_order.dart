@@ -123,68 +123,45 @@ class _PunchOrderViewState extends State<PunchOrderView> {
         ),
         actions: [
           Stack(
-  clipBehavior: Clip.none,
-  children: [
-    IconButton(
-      icon: const Icon(Icons.shopping_cart_outlined,size: 30,),
-      onPressed: _openCartScreen,
-    ),
-    Positioned(
-      right: 6,
-      top: 6,
-      child: PersistentShoppingCart().showCartItemCountWidget(
-        cartItemCountWidgetBuilder: (count) {
-          if (count <= 0) return const SizedBox.shrink();
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-            child: Text(
-              count.toString(),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 9,
-                fontWeight: FontWeight.bold,
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.shopping_cart_outlined,
+                  size: 30,
+                ),
+                onPressed: _openCartScreen,
               ),
-            ),
-          );
-        },
-      ),
-    ),
-  ],
-),
-
-          // IconButton(
-          //   icon: const Icon(Icons.shopping_cart_outlined),
-          //   onPressed: _openCartScreen,
-          // ),
-
-          // Padding(
-          //   padding: const EdgeInsets.only(right: 12, top: 12),
-          //   child: PersistentShoppingCart().showCartItemCountWidget(
-          //     cartItemCountWidgetBuilder: (count) {
-          //       if (count <= 0) return const SizedBox.shrink();
-          //       return Container(
-          //         padding: const EdgeInsets.symmetric(
-          //           horizontal: 8,
-          //           vertical: 2,
-          //         ),
-          //         decoration: BoxDecoration(
-          //           color: Colors.red,
-          //           borderRadius: BorderRadius.circular(12),
-          //         ),
-          //         child: Text(
-          //           count.toString(),
-          //           style: const TextStyle(color: Colors.white, fontSize: 12),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
+              Positioned(
+                right: 6,
+                top: 6,
+                child: PersistentShoppingCart().showCartItemCountWidget(
+                  cartItemCountWidgetBuilder: (count) {
+                    if (count <= 0) return const SizedBox.shrink();
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints:
+                          const BoxConstraints(minWidth: 18, minHeight: 18),
+                      child: Text(
+                        count.toString(),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -286,7 +263,7 @@ class ProductCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           quantity.toString(),
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                       InkWell(
@@ -304,7 +281,7 @@ class ProductCard extends StatelessWidget {
                     style: const TextStyle(color: Colors.grey, fontSize: 11),
                   ),
                   Text(
-                    "\$${product.price.toStringAsFixed(2)}",
+                    "${product.price.toStringAsFixed(2)}",
                     style: const TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
@@ -313,7 +290,6 @@ class ProductCard extends StatelessWidget {
                   ),
                   Text(
                     "Mezan Group is one of Pakistan's leading FMCG companies, offering a range of products including edible oil, beverages, and tea. Over the last few years, Mezan has proven to be admired across Pakistan due to its wide variety of products",
-
                     style: const TextStyle(color: Colors.grey, fontSize: 11),
                   ),
                 ],
