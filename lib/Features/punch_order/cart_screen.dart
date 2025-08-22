@@ -239,6 +239,7 @@ class _CartScreenState extends State<CartScreen> {
                                           icon: Icons.reviews,
                                           isDark: isDark,
                                         ),
+                                         SizedBox(height: 5),
                                         Text(
                                           "OR",
                                           textAlign: TextAlign.center,
@@ -247,6 +248,7 @@ class _CartScreenState extends State<CartScreen> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
+
                                         Divider(),
                                         Text(
                                           "Record a Voice Message",
@@ -258,10 +260,20 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
 
                                         Divider(),
-                                          ElevatedButton(
-              onPressed: _isRecording ? _stopRecording : _startRecording,
-              child: Text(_isRecording ? "Stop Recording" : "Start Recording"),
-            ),
+                                        ElevatedButton(
+  onPressed: () async {
+    if (_isRecording) {
+      await _stopRecording();
+    } else {
+      await _startRecording();
+    }
+  },
+  child: Text(_isRecording ? "Stop Recording" : "Start Recording"),
+),
+            //                               ElevatedButton(
+            //   onPressed: _isRecording ? _stopRecording : _startRecording,
+            //   child: Text(_isRecording ? "Stop Recording" : "Start Recording"),
+            // ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _playRecording,
