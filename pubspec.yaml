@@ -57,6 +57,10 @@ dependencies:
   carousel_slider: ^5.1.1
   flutter_local_authentication: ^1.2.0
   local_auth: ^2.3.0
+  record: ^6.1.1
+  path_provider: ^2.1.4
+  audioplayers: ^5.2.1
+
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +73,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.4
+
 
 flutter_launcher_icons:
   android: "launcher_icon"

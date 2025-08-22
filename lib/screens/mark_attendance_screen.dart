@@ -41,7 +41,6 @@ class _MarkAttendanceViewState extends State<MarkAttendanceView> {
   Future<void> _initMap() async {
     await _loadCustomMarkers();
     await _requestPermissionAndFetchLocation();
-    // _addRandomShopMarkers();
     setState(() {
       _isMapReady = true;
       distanceInfo = '';

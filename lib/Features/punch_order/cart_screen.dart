@@ -1,14 +1,19 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:motives_tneww/Features/punch_order/punch_order.dart';
 import 'package:motives_tneww/widget/toast_widget.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart'
     show PersistentShoppingCart;
-
 import '../../Models/product_model.dart';
 import '../../screens/dashboard.dart';
+import 'package:record/record.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 bool isPasswordVisible = false;
 TextEditingController shopReview = TextEditingController();
+
+
 
 class CartScreen extends StatefulWidget {
   final VoidCallback? onChange;
@@ -19,9 +24,61 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+     final _recorder = AudioRecorder(); // ✅ new in record 6.x
+  final _player = AudioPlayer();
+
+  String? _filePath;
+  bool _isRecording = false;
+
+  Future<void> _startRecording() async {
+    // Check permission
+    if (await _recorder.hasPermission()) {
+      final dir = await getApplicationDocumentsDirectory();
+      final path = '${dir.path}/voice_${DateTime.now().millisecondsSinceEpoch}.m4a';
+
+      await _recorder.start(
+        const RecordConfig(encoder: AudioEncoder.aacLc), // ✅ new config
+        path: path,
+      );
+
+      setState(() {
+        _filePath = path;
+        _isRecording = true;
+      });
+    }
+  }
+
+  Future<void> _stopRecording() async {
+    final path = await _recorder.stop();
+
+    setState(() {
+      _isRecording = false;
+      _filePath = path;
+    });
+  }
+
+  Future<void> _playRecording() async {
+    if (_filePath != null && File(_filePath!).existsSync()) {
+      await _player.play(DeviceFileSource(_filePath!));
+    }
+  }
+
+  Future<void> _deleteRecording() async {
+    if (_filePath != null) {
+      final file = File(_filePath!);
+      if (await file.exists()) {
+        await file.delete();
+      }
+      setState(() {
+        _filePath = null;
+      });
+    }
+  }
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -201,14 +258,29 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
 
                                         Divider(),
-                                        Text(
-                                          "Are you sure, you want to confirm the order?",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            // color: Colors.black
-                                          ),
-                                        ),
+                                          ElevatedButton(
+              onPressed: _isRecording ? _stopRecording : _startRecording,
+              child: Text(_isRecording ? "Stop Recording" : "Start Recording"),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _playRecording,
+              child: const Text("Play Recording"),
+            ),
+            //                           ElevatedButton(
+            //   onPressed: _isRecording ? _stopRecording : _startRecording,
+            //   child: Text(_isRecording ? "Stop Recording" : "Start Recording"),
+            // ),
+            // const SizedBox(height: 16),
+            // ElevatedButton(
+            //   onPressed: _playRecording,
+            //   child: const Text("Play Recording"),
+            // ),
+            // const SizedBox(height: 16),
+            // ElevatedButton(
+            //   onPressed: _deleteRecording,
+            //   child: const Text("Delete Recording"),
+            // ),
                                         SizedBox(height: 25),
                                         InkWell(
                                           onTap: () {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:motives_tneww/screens/home.dart';
 import 'package:motives_tneww/screens/splash.dart';
 import 'package:motives_tneww/theme_change/theme_bloc.dart';
 import 'package:motives_tneww/theme_change/theme_state.dart';
@@ -18,11 +16,8 @@ void main() async{
   );
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
@@ -42,7 +37,7 @@ class MyApp extends StatelessWidget {
           ),
           darkTheme: ThemeData(
             brightness: Brightness.dark,
-            scaffoldBackgroundColor: Colors.black,
+            scaffoldBackgroundColor: Colors.black12,
             textTheme: const TextTheme(
               bodyLarge: TextStyle(color: Colors.white),
               bodyMedium: TextStyle(color: Colors.white),
@@ -57,24 +52,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<ThemeBloc, ThemeState>(
-//       builder: (context, state) {
-//         return MaterialApp(
-//           title: 'Motives-T',
-//           debugShowCheckedModeBanner: false,
-//           theme: ThemeData.light(),
-//           darkTheme: ThemeData.dark(),
-//           themeMode: state.themeMode,
-//           home: const MainScreen(),
-//         );
-//       },
-//     );
-//   }
-// }
