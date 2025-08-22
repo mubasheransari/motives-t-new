@@ -134,7 +134,7 @@ class _CartScreenState extends State<CartScreen> {
                                 return Dialog(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
-                                  backgroundColor: Colors.white,
+                                 // backgroundColor: Colors.white,
                                   child: Padding(
                                     padding: const EdgeInsets.all(20.0),
                                     child: Column(
@@ -146,7 +146,8 @@ class _CartScreenState extends State<CartScreen> {
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 18,
-                                              color: Colors.black),
+                                             // color: Colors.black
+                                              ),
                                         ),
                                         SizedBox(height: 25),
                                         InkWell(
