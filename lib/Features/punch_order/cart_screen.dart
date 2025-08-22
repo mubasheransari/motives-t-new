@@ -7,6 +7,9 @@ import 'package:persistent_shopping_cart/persistent_shopping_cart.dart'
 import '../../Models/product_model.dart';
 import '../../screens/dashboard.dart';
 
+bool isPasswordVisible = false;
+TextEditingController shopReview = TextEditingController();
+
 class CartScreen extends StatefulWidget {
   final VoidCallback? onChange;
   const CartScreen({super.key, this.onChange});
@@ -18,28 +21,31 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-          toolbarHeight: 70,
-          automaticallyImplyLeading: false,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: ShaderMaskText(text: 'Cart', textxfontsize: 22),
+        toolbarHeight: 70,
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 4.0),
+          child: ShaderMaskText(text: 'Cart', textxfontsize: 22),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              PersistentShoppingCart().clearCart();
+              widget.onChange?.call();
+              setState(() {});
+              toastWidget("Deleted All Cart Items", Colors.red);
+            },
+            child: Icon(
+              Icons.delete,
+              size: 25,
+              color: Colors.red,
+            ), //const Text('Clear', style: TextStyle(color: Colors.black)),
           ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  PersistentShoppingCart().clearCart();
-                  widget.onChange?.call();
-                  setState(() {});
-                  toastWidget("Deleted All Cart Items", Colors.red);
-                },
-                child: Icon(Icons.delete,
-                    size: 25,
-                    color: Colors
-                        .red) //const Text('Clear', style: TextStyle(color: Colors.black)),
-                )
-          ]),
+        ],
+      ),
       body: PersistentShoppingCart().showCartItems(
         cartItemsBuilder: (context, cartItems) {
           if (cartItems.isEmpty) {
@@ -66,15 +72,17 @@ class _CartScreenState extends State<CartScreen> {
                     product: product,
                     quantity: item.quantity,
                     onIncrement: () async {
-                      await PersistentShoppingCart()
-                          .incrementCartItemQuantity(item.productId);
+                      await PersistentShoppingCart().incrementCartItemQuantity(
+                        item.productId,
+                      );
                       widget.onChange?.call();
                       setState(() {});
                     },
                     onDecrement: () async {
                       if (item.quantity <= 1) {
-                        await PersistentShoppingCart()
-                            .removeFromCart(item.productId);
+                        await PersistentShoppingCart().removeFromCart(
+                          item.productId,
+                        );
                       } else {
                         await PersistentShoppingCart()
                             .decrementCartItemQuantity(item.productId);
@@ -89,8 +97,9 @@ class _CartScreenState extends State<CartScreen> {
                     child: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.redAccent),
                       onPressed: () async {
-                        await PersistentShoppingCart()
-                            .removeFromCart(item.productId);
+                        await PersistentShoppingCart().removeFromCart(
+                          item.productId,
+                        );
                         widget.onChange?.call();
                         setState(() {});
                       },
@@ -110,16 +119,22 @@ class _CartScreenState extends State<CartScreen> {
               children: [
                 Expanded(
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Total: ${total.toStringAsFixed(2)}',
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text(
-                            '${PersistentShoppingCart().getCartItemCount()} item(s)',
-                            style: const TextStyle(color: Colors.grey)),
-                      ]),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Total: ${total.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${PersistentShoppingCart().getCartItemCount()} item(s)',
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 45,
@@ -133,8 +148,9 @@ class _CartScreenState extends State<CartScreen> {
                               builder: (BuildContext context) {
                                 return Dialog(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                 // backgroundColor: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  // backgroundColor: Colors.white,
                                   child: Padding(
                                     padding: const EdgeInsets.all(20.0),
                                     child: Column(
@@ -145,9 +161,53 @@ class _CartScreenState extends State<CartScreen> {
                                           "Are you sure, you want to confirm the order?",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              fontSize: 18,
-                                             // color: Colors.black
-                                              ),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            // color: Colors.black
+                                          ),
+                                        ),
+                                        Divider(),
+                                        Text(
+                                          "Shop Owner Review About Mezan Tea",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            // color: Colors.black
+                                          ),
+                                        ),
+                                        Divider(),
+                                        _customTextField(
+                                          controller: shopReview,
+                                          hint: "Shop Owner Review",
+                                          icon: Icons.reviews,
+                                          isDark: isDark,
+                                        ),
+                                        Text(
+                                          "OR",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Divider(),
+                                        Text(
+                                          "Record a Voice Message",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            // color: Colors.black
+                                          ),
+                                        ),
+
+                                        Divider(),
+                                        Text(
+                                          "Are you sure, you want to confirm the order?",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            // color: Colors.black
+                                          ),
                                         ),
                                         SizedBox(height: 25),
                                         InkWell(
@@ -158,17 +218,20 @@ class _CartScreenState extends State<CartScreen> {
                                             widget.onChange?.call();
                                             Navigator.pop(context);
                                             Navigator.pop(context);
-                                            toastWidget("Order Confirmed",
-                                                Colors.green);
+                                            toastWidget(
+                                              "Order Confirmed",
+                                              Colors.green,
+                                            );
                                           },
                                           child: Ink(
                                             padding: const EdgeInsets.symmetric(
-                                                vertical: 12),
+                                              vertical: 12,
+                                            ),
                                             decoration: BoxDecoration(
                                               gradient: const LinearGradient(
                                                 colors: [
                                                   Colors.cyan,
-                                                  Colors.purpleAccent
+                                                  Colors.purpleAccent,
                                                 ],
                                                 begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
@@ -180,10 +243,10 @@ class _CartScreenState extends State<CartScreen> {
                                               child: Text(
                                                 'Confirm Order',
                                                 style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -236,9 +299,10 @@ class _CartScreenState extends State<CartScreen> {
                         child: Text(
                           'Place Order',
                           style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -247,6 +311,44 @@ class _CartScreenState extends State<CartScreen> {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _customTextField({
+    required TextEditingController controller,
+    required String hint,
+    required IconData icon,
+    bool isPassword = false,
+    required bool isDark,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: isPassword && !isPasswordVisible,
+      style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: isDark ? Colors.white54 : Colors.grey),
+        prefixIcon: Icon(icon, color: Colors.cyan),
+        suffixIcon: isPassword
+            ? IconButton(
+                icon: Icon(
+                  isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: isDark ? Colors.white54 : Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    isPasswordVisible = !isPasswordVisible;
+                  });
+                },
+              )
+            : null,
+        filled: true,
+        fillColor: isDark ? const Color(0xFF2A2A2A) : Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
         ),
       ),
     );
